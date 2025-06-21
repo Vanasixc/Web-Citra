@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Image Processing Web App</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"/>
+</head>
+<body>
+
+  <!-- Toggle Button Left -->
+  <button class="btn btn-sm btn-secondary" id="toggleLeftSidebarBtn">⇤</button>
+
+  <!-- Sidebar Kiri -->
+  <nav id="leftSidebar">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h5 class="mb-0 mt-5">Tugas Citra</h5>
+    </div>
+    <ul class="nav flex-column">
+      <li class="nav-item mb-2"><a href="#" class="nav-link text-white task-link" data-task="task1">Tugas 1 - Threshold</a></li>
+      <li class="nav-item mb-2"><a href="#" class="nav-link text-white task-link" data-task="task2">Tugas 2 - Garis Tepi</a></li>
+      <li class="nav-item mb-2"><a href="#" class="nav-link text-white task-link" data-task="task3">Tugas 3 - Morphology Dasar</a></li>
+      <li class="nav-item mb-2"><a href="#" class="nav-link text-white task-link" data-task="task4">Tugas 4 - Morfologi Lanjutan</a></li>
+    </ul>
+  </nav>
+
+  <!-- Toggle Button Right -->
+  <button class="btn btn-sm btn-secondary" id="toggleRightSidebarBtn">⇥</button>
+
+  <!-- Sidebar Kanan -->
+  <nav id="rightSidebar">
+    <div class="position-sticky pt-3">
+      <div class="text-center mb-4">
+        <h5>Pengolahan Citra</h5>
+      </div>
+      <div class="px-3 mb-4 text-center">
+        <button type="button" class="btn btn-primary w-100" id="uploadBtn">Upload Image</button>
+        <input type="file" id="imageInput" style="display: none;" accept="image/*">
+      </div>
+      
+      <!-- Tugas 1 - Threshold Controls -->
+      <div id="task1Controls" class="task-controls">
+        <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+          <span>Thresholding</span>
+        </h6>
+        <ul class="nav flex-column px-2">
+          <li class="nav-item">
+            <button class="nav-link btn btn-outline-primary w-100 mb-1 process-btn" data-method="threshold">Threshold Binary</button>
+          </li>
+          <li class="nav-item">
+            <div class="mb-2 mt-2">
+              <label for="thresholdValue" class="form-label">Threshold Value: <span id="thresholdValueDisplay">127</span></label>
+              <input type="range" class="form-range" min="0" max="255" value="127" id="thresholdValue">
+            </div>
+          </li>
+        </ul>
+      </div>
+      
+      <!-- Tugas 2 - Edge Detection Controls -->
+      <div id="task2Controls" class="task-controls" style="display: none;">
+        <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+          <span>Deteksi Tepi</span>
+        </h6>
+        <ul class="nav flex-column px-2">
+          <li class="nav-item">
+            <button class="nav-link btn btn-outline-primary w-100 mb-1 process-btn" data-method="sobel">Sobel</button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link btn btn-outline-primary w-100 mb-1 process-btn" data-method="prewitt">Prewitt</button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link btn btn-outline-primary w-100 mb-1 process-btn" data-method="roberts">Roberts</button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link btn btn-outline-primary w-100 mb-1 process-btn" data-method="canny">Canny</button>
+          </li>
+        </ul>
+      </div>
+      
+      <!-- Tugas 3 - Morphology Dasar Controls -->
+      <div id="task3Controls" class="task-controls" style="display: none;">
+        <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+          <span>Morfologi Dasar</span>
+        </h6>
+        <ul class="nav flex-column px-2">
+          <li class="nav-item">
+            <button class="nav-link btn btn-outline-primary w-100 mb-1 process-btn" data-method="erosion">Erosion</button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link btn btn-outline-primary w-100 mb-1 process-btn" data-method="dilation">Dilation</button>
+          </li>
+          <li class="nav-item">
+            <div class="mb-2 mt-3">
+              <label for="kernelShape" class="form-label">Kernel Shape:</label>
+              <select class="form-select" id="kernelShape">
+                <option value="rect">Rectangle</option>
+                <option value="ellipse">Ellipse</option>
+                <option value="cross">Cross</option>
+              </select>
+            </div>
+          </li>
+          <li class="nav-item">
+            <div class="mb-2">
+              <label for="kernelSize" class="form-label">Kernel Size: <span id="kernelSizeDisplay">3</span></label>
+              <input type="range" class="form-range" min="1" max="15" step="2" value="3" id="kernelSize">
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Tugas 4 - Morfologi Lanjutan Controls -->
+      <div id="task4Controls" class="task-controls" style="display: none;">
+        <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+          <span>Morfologi Lanjutan</span>
+        </h6>
+        <ul class="nav flex-column px-2">
+          <li class="nav-item">
+            <button class="nav-link btn btn-outline-primary w-100 mb-1 process-btn" data-method="boundary">Boundary Extraction</button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link btn btn-outline-primary w-100 mb-1 process-btn" data-method="skeletonize">Skeletonizing</button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link btn btn-outline-primary w-100 mb-1 process-btn" data-method="thickening">Thickening</button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link btn btn-outline-primary w-100 mb-1 process-btn" data-method="region_filling">Region Filling</button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link btn btn-outline-primary w-100 mb-1 process-btn" data-method="convex_hull">Convex Hull</button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link btn btn-outline-primary w-100 mb-1 process-btn" data-method="pruning">Pruning</button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link btn btn-outline-primary w-100 mb-1 process-btn" data-method="thinning">Thinning</button>
+          </li>
+        </ul>
+      </div>
+      
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main id="main-content">
+    <div class="container-fluid">
+      <div class="d-flex justify-content-between align-items-center pb-2 mb-3">
+        <h1 class="h2">Pengolahan Citra Digital</h1>
+        <h3 id="currentTask">Tugas 1 - Threshold</h3> <!-- Default task -->
+      </div>
+
+      <div class="row mb-4" id="imageContainer">
+        <div class="col-md-12 text-center" id="initialPrompt">
+          <h3>Silahkan Upload Gambar</h3>
+          <p>Klik tombol "Upload Image" di sidebar kanan untuk memulai</p>
+        </div>
+      </div>
+
+      <div class="row mb-3" id="processedImagesRow">
+        <div class="col-md-6" id="originalImageContainer" style="display: none;">
+          <div class="text-center">
+            <h4>Gambar Awal</h4>
+            <img id="originalImage" class="img-fluid img-thumbnail" style="max-width: 800px; max-height: 600px;" alt="Original Image">
+          </div>
+        </div>
+        <div class="col-md-6" id="processedImageContainer" style="display: none;">
+          <div class="text-center">
+            <h4 id="processedTitle">Hasil Pemrosesan</h4>
+            <img id="processedImage" class="img-fluid img-thumbnail" style="max-width: 800px; max-height: 600px;" alt="Processed Image">
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

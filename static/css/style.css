@@ -1,0 +1,233 @@
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  overflow-x: hidden; /* Prevent horizontal scroll */
+  position: relative;
+  margin: 0;
+  padding: 0;
+  background-color: #f8f9fa; /* Light gray background */
+}
+
+span{
+  font-weight: bold;
+  color: white
+}
+
+/* Sidebar common styles */
+#leftSidebar, #rightSidebar {
+  position: fixed;
+  top: 0;
+  height: 100vh; /* Full viewport height */
+  background-color: #343a40; /* Dark background */
+  color: white;
+  transition: all 0.3s ease-in-out;
+  overflow-y: auto; /* Scroll for content overflow */
+  z-index: 1030; /* Higher than Bootstrap navbar default */
+  padding: 20px;
+  box-shadow: 2px 0 5px rgba(0,0,0,0.1); /* Subtle shadow */
+}
+
+#leftSidebar {
+  left: 0;
+  width: 240px;
+}
+
+#rightSidebar {
+  right: 0;
+  width: 240px;
+}
+
+/* Minimized states for sidebars */
+#leftSidebar.minimized {
+  left: -220px; 
+}
+
+
+#rightSidebar.minimized {
+  right: -220px;
+}
+
+/* Toggle Buttons */
+#toggleLeftSidebarBtn, #toggleRightSidebarBtn {
+  position: fixed;
+  z-index: 1031; /* Above sidebars */
+  top: 10px;
+  transition: all 0.3s ease;
+  background-color: #6c757d; /* Bootstrap secondary */
+  border-color: #6c757d;
+  color: white;
+}
+
+#toggleLeftSidebarBtn {
+  left: 240px; /* Initial position next to open left sidebar */
+}
+
+#toggleRightSidebarBtn {
+  right: 240px; /* Initial position next to open right sidebar */
+}
+
+
+/* Main content area */
+#main-content {
+  padding: 20px;
+  transition: margin-left 0.3s ease-in-out, margin-right 0.3s ease-in-out;
+  margin-top: 0; /* Adjust if you have a fixed top navbar */
+}
+
+/* Adjust main content margin based on sidebar states */
+/* Default when both are open */
+#main-content {
+    margin-left: 240px;
+    margin-right: 240px;
+}
+
+/* When left is minimized (collapsed) */
+#main-content.left-expanded { /* 'expanded' means main content takes more space */
+    margin-left: 20px; /* Small margin for the collapsed sidebar handle area */
+}
+/* When left is open */
+#main-content.left-collapsed {
+    margin-left: 240px;
+}
+
+
+/* When right is minimized (collapsed) */
+#main-content.right-expanded {
+    margin-right: 20px;
+}
+/* When right is open */
+#main-content.right-collapsed {
+    margin-right: 240px;
+}
+
+
+/* Both sidebars minimized */
+#main-content.left-expanded.right-expanded {
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+
+/* Sidebar navigation links */
+.nav-link {
+  color: rgba(255, 255, 255, 0.8);
+  transition: color 0.2s, background-color 0.2s;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+}
+
+.nav-link:hover {
+  color: white;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.nav-link.active { /* Style for active task link */
+  background-color: #0d6efd; /* Bootstrap primary */
+  color: white !important; /* Ensure text is white */
+  font-weight: bold;
+}
+
+.task-link { /* Specific styling for task links in left sidebar if needed */
+  padding: 8px 16px;
+  border-radius: 4px;
+}
+
+
+/* Processing buttons in right sidebar */
+.process-btn {
+  border-color: #6c757d; /* Softer border */
+  color: #fff; /* White text */
+  background-color: #495057; /* Slightly lighter dark shade */
+  transition: all 0.2s;
+  width: 100%; /* Make buttons full width of their container */
+  margin-bottom: 0.5rem; /* Space between buttons */
+}
+
+.process-btn:hover {
+  background-color: #6c757d; /* Bootstrap secondary on hover */
+  border-color: #6c757d;
+  color: #fff;
+}
+
+/* Image display area */
+#imageContainer {
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+#initialPrompt {
+  padding: 50px;
+  border: 2px dashed #adb5bd; /* Dashed border */
+  border-radius: 5px;
+  text-align: center;
+  color: #6c757d; /* Muted text color */
+  background-color: #e9ecef; /* Light background for prompt */
+}
+
+#processedImagesRow img {
+  border: 1px solid #dee2e6; /* Standard Bootstrap border */
+  border-radius: 0.25rem;
+  max-width: 100%; /* Responsive images */
+  height: auto; /* Maintain aspect ratio */
+  background-color: #fff; /* White background for images */
+  padding: 0.25rem; /* Small padding around image */
+  box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,0.075); /* Subtle shadow */
+}
+
+/* Headings in sidebars */
+.sidebar-heading {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: .05rem;
+    color: #adb5bd; /* Muted color for headings */
+}
+
+
+/* Responsive adjustments */
+@media (max-width: 992px) { /* Tablets and smaller */
+  #leftSidebar, #rightSidebar {
+    width: 200px;
+  }
+  
+  #main-content.left-collapsed { margin-left: 200px; }
+  #main-content.right-collapsed { margin-right: 200px; }
+  #main-content.left-expanded { margin-left: 20px; }
+  #main-content.right-expanded { margin-right: 20px; }
+
+
+  #toggleLeftSidebarBtn { left: 200px; }
+  #toggleRightSidebarBtn { right: 200px; }
+
+  #leftSidebar.minimized { left: -180px; }
+  #rightSidebar.minimized { right: -180px; }
+
+  /* Adjust toggle button position when sidebar is minimized */
+  /* These are now handled by JS
+  #leftSidebar.minimized + #toggleLeftSidebarBtn { left: 10px; }
+  #rightSidebar.minimized ~ #toggleRightSidebarBtn { right: 10px; }
+  */
+}
+
+@media (max-width: 768px) { /* Mobile devices */
+  /* On smaller screens, maybe only one sidebar is practical or they overlap */
+  /* This example keeps them collapsible */
+  #leftSidebar.minimized { left: -180px; } /* Adjust based on actual minimized width */
+  #rightSidebar.minimized { right: -180px; }
+  
+  /* Main content takes full width when sidebars are 'minimized' (effectively hidden) */
+  #main-content.left-expanded.right-expanded {
+    margin-left: 10px; /* Minimal margin */
+    margin-right: 10px; /* Minimal margin */
+  }
+  #main-content.left-expanded { margin-left: 10px; }
+  #main-content.right-expanded { margin-right: 10px; }
+
+  .h2, #currentTask {
+    font-size: 1.5rem; /* Smaller headings on mobile */
+  }
+  #currentTask {
+    font-size: 1.2rem;
+  }
+}
